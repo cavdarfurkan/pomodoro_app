@@ -4,91 +4,54 @@ import 'package:pie_timer/pie_timer.dart';
 
 import '../view_model/timer_view_model.dart';
 
-class TimerView extends StatefulWidget {
+class TimerView extends StatelessWidget {
   const TimerView({Key? key}) : super(key: key);
 
   @override
-  State<TimerView> createState() => _TimerViewState();
-}
-
-class _TimerViewState extends State<TimerView>
-    with SingleTickerProviderStateMixin {
-  late PieAnimationController _controller;
-
-  @override
-  void initState() {
-    super.initState();
-    _controller = PieAnimationController(vsync: this);
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    _controller.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    return Consumer<TimerViewModel>(
-      builder: (context, model, child) => Column(
-        children: [
-          if (model.type == PomodoroType.main)
-            buildPieTimer(
-              _controller,
-              model.timerModel.duration,
-              model.timerModel.pieColor,
-              model.timerModel.fillColor,
-            ),
-            if (model.type == PomodoroType.go)
-            buildPieTimer(
-              _controller,
-              model.timerModel.duration,
-              model.timerModel.pieColor,
-              model.timerModel.fillColor,
-            ),
-            if (model.type == PomodoroType.pause)
-            buildPieTimer(
-              _controller,
-              model.timerModel.duration,
-              model.timerModel.pieColor,
-              model.timerModel.fillColor,
-            ),
-          Row(
+    return Column(
+      children: [
+        Consumer<TimerViewModel>(
+          builder: (context, model, child) => Column(
             children: [
-              ElevatedButton(
-                onPressed: () {
-                  _controller.forward();
-                  model.onStart();
-                },
-                child: const Text('Play'),
+              Visibility(
+                visible: model.vis1,
+                maintainState: false,
+                child: _buildPieWidget(model),
               ),
-              ElevatedButton(
-                onPressed: () {
-                  _controller.stop();
-                  model.onStop();
-                },
-                child: const Text('Stop'),
+              Visibility(
+                visible: model.vis2,
+                maintainState: false,
+                child: _buildPieWidget(model),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Expanded(
+                    child: ElevatedButton(
+                      onPressed: () => model.changeVisibility(),
+                      child: const Text('Next'),
+                    ),
+                  ),
+                ],
               ),
             ],
           ),
-          Center(
-            child: Text('${model.timerModel.duration}'),
-          ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }
 
-PieTimer buildPieTimer(PieAnimationController controller, Duration duration,
-    Color pieColor, Color fillColor) {
+PieTimer _buildPieWidget(TimerViewModel model) {
   return PieTimer(
-    pieAnimationController: controller,
-    duration: duration,
+    duration: model.timerModel.duration,
     radius: 150.0,
-    pieColor: pieColor,
-    fillColor: fillColor,
+    pieColor: model.timerModel.pieColor,
+    fillColor: model.timerModel.fillColor,
     borderWidth: 10.0,
+    borderColor: Colors.white,
     shadowElevation: 10.0,
+    enableTouchControls: true,
   );
 }

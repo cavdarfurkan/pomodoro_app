@@ -6,8 +6,13 @@ import './view/timer_view.dart';
 import './view_model/timer_view_model.dart';
 
 void main() {
-  runApp(const MyApp());
-  debugRepaintRainbowEnabled = true;
+  runApp(MultiProvider(
+    providers: [
+      ChangeNotifierProvider<TimerViewModel>(create: (_) => TimerViewModel()),
+    ],
+    child: const MyApp(),
+  ));
+  debugRepaintRainbowEnabled = false;
 }
 
 class MyApp extends StatelessWidget {
@@ -15,16 +20,9 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: [
-        ChangeNotifierProvider<TimerViewModel>(
-          create: (context) => TimerViewModel(),
-        )
-      ],
-      child: const MaterialApp(
-        title: 'Pomodoro App',
-        home: MyHomeWidget(),
-      ),
+    return const MaterialApp(
+      title: 'Pomodoro App',
+      home: MyHomeWidget(),
     );
   }
 }

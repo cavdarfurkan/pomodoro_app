@@ -3,15 +3,11 @@ import '../model/timer_model.dart';
 
 enum PomodoroType { main, go, shortBreak, longBreak, pause }
 
-class TimerViewModel with ChangeNotifier {
-  PomodoroType type = PomodoroType.main;
+class TimerViewModel extends ChangeNotifier {
+  late PomodoroType type = PomodoroType.main;
   late TimerModel timerModel;
-
-  // late TimerModel mainModel;
-  // late TimerModel goModel;
-  // late TimerModel shortBreakModel;
-  // late TimerModel longBreakModel;
-  // late TimerModel pauseModel;
+  bool vis1 = true;
+  bool vis2 = false;
 
   TimerViewModel() {
     _buildModel();
@@ -19,7 +15,6 @@ class TimerViewModel with ChangeNotifier {
 
   void _buildModel() {
     if (type == PomodoroType.main) {
-      debugPrint("main");
       timerModel = const TimerModel(
         duration: Duration(seconds: 10),
         radius: 100.0,
@@ -28,7 +23,6 @@ class TimerViewModel with ChangeNotifier {
       );
     }
     if (type == PomodoroType.go) {
-      debugPrint("go");
       timerModel = const TimerModel(
         duration: Duration(minutes: 25),
         radius: 100.0,
@@ -36,29 +30,23 @@ class TimerViewModel with ChangeNotifier {
         fillColor: Colors.yellow,
       );
     }
-
     if (type == PomodoroType.shortBreak) {
-      debugPrint("short");
       timerModel = const TimerModel(
         duration: Duration(minutes: 5),
         radius: 100.0,
         pieColor: Colors.blueAccent,
-        fillColor: Colors.red,
+        fillColor: Colors.white,
       );
     }
-
     if (type == PomodoroType.longBreak) {
-      debugPrint("long");
       timerModel = const TimerModel(
         duration: Duration(minutes: 15),
         radius: 100.0,
         pieColor: Colors.blueAccent,
-        fillColor: Colors.red,
+        fillColor: Colors.green,
       );
     }
-
     if (type == PomodoroType.pause) {
-      debugPrint("pause");
       timerModel = TimerModel(
         duration: const Duration(seconds: 50),
         radius: 100.0,
@@ -66,17 +54,23 @@ class TimerViewModel with ChangeNotifier {
         fillColor: Colors.grey,
       );
     }
+  }
 
+  void changeVisibility() {
+    vis1 = !vis1;
+    vis2 = !vis2;
+    nextModel();
+  }
+
+  void nextModel() {
+    int i = type.index;
+    int n = i + 1;
+    if (i == PomodoroType.values.length - 1) {
+      n = 0;
+    }
+    type = PomodoroType.values.elementAt(n);
+    _buildModel();
     notifyListeners();
   }
 
-  void onStart() {
-    type = PomodoroType.go;
-    _buildModel();
-  }
-
-  void onStop() {
-    type = PomodoroType.pause;
-    _buildModel();
-  }
 }
