@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:pomodoro_app/provider/appbar_provider.dart';
+
 import '../model/timer_model.dart';
 
 class TimerViewModel extends ChangeNotifier {
@@ -24,24 +26,28 @@ class TimerViewModel extends ChangeNotifier {
       radius: 100.0,
       pieColor: Colors.blueAccent,
       fillColor: Colors.red,
+      appBarColor: Colors.red,
     );
     goModel = const TimerModel(
       duration: Duration(minutes: 25),
       radius: 100.0,
       pieColor: Colors.blueAccent,
       fillColor: Colors.yellow,
+      appBarColor: Colors.yellow,
     );
     shortBreakModel = const TimerModel(
       duration: Duration(minutes: 5),
       radius: 100.0,
       pieColor: Colors.blueAccent,
       fillColor: Colors.white,
+      appBarColor: Colors.white,
     );
     longBreakModel = const TimerModel(
       duration: Duration(minutes: 15),
       radius: 100.0,
       pieColor: Colors.blueAccent,
       fillColor: Colors.green,
+      appBarColor: Colors.green,
     );
   }
 }

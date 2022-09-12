@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pomodoro_app/provider/appbar_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:pie_timer/pie_timer.dart';
 
@@ -16,9 +17,12 @@ class TimerView extends StatelessWidget {
         controller: pageController,
         scrollDirection: Axis.horizontal,
         scrollBehavior: AppScrollBehaviour(),
-        onPageChanged: (value) => debugPrint('$value'),
+        onPageChanged: (value) =>
+            Provider.of<AppBarProvider>(context, listen: false)
+                .changeAppBarColor(
+                    model.listTimerModel.elementAt(value).appBarColor),
         children: [
-          for (var pies in _pieWidget(model)) pies,
+          for (var pie in _pieWidget(model)) pie,
         ],
       ),
     );
@@ -42,7 +46,7 @@ List<Widget> _pieWidget(TimerViewModel model) {
             shadowElevation: 5.0,
             enableTouchControls: true,
           ),
-          ElevatedButton(onPressed: () {}, child: Text("qwe")),
+          ElevatedButton(onPressed: () {}, child: const Text("qwe")),
         ],
       ),
     ));
