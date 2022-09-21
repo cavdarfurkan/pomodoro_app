@@ -1,53 +1,57 @@
 import 'package:flutter/material.dart';
-import 'package:pomodoro_app/provider/appbar_provider.dart';
 
 import '../model/timer_model.dart';
 
-class TimerViewModel extends ChangeNotifier {
-  late List<TimerModel> listTimerModel = [
-    mainModel,
-    goModel,
-    shortBreakModel,
-    longBreakModel,
-  ];
+import '../view/timer_view_pomodoro.dart';
+import '../view/timer_view_short_break.dart';
+import '../view/timer_view_long_break.dart';
 
-  late TimerModel mainModel;
-  late TimerModel goModel;
-  late TimerModel shortBreakModel;
-  late TimerModel longBreakModel;
+class TimerViewModel {
+  TimerViewModel();
 
-  TimerViewModel() {
-    _buildModel();
+  TimerModel model = TimerModel(longBreakInterval: 4);
+  int cycleCounter = 1;
+
+  void nextPage(BuildContext context) {
+    Navigator.of(context).pushReplacement(
+      PageRouteBuilder(
+        pageBuilder: (_, animation, secondaryAnimation) {
+          if (cycleCounter != 4) {
+            if (context.widget.toString() == 'PomodoroBody') {
+              return const TimerViewShortBreak();
+            } else {
+              incrementCycle();
+              debugPrint("${cycleCounter}");
+              return const TimerViewPomodoro();
+            }
+          } else {
+            resetCycle();
+            return const TimerViewLongBreak();
+          }
+        },
+        transitionDuration: const Duration(milliseconds: 300),
+        transitionsBuilder: (_, animation, __, child) {
+          const begin = Offset(1.0, 0.0);
+          const end = Offset.zero;
+          const curve = Curves.fastLinearToSlowEaseIn;
+
+          final tween =
+              Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+
+          return SlideTransition(
+            position: animation.drive(tween),
+            child: child,
+          );
+        },
+      ),
+    );
   }
 
-  void _buildModel() {
-    mainModel = const TimerModel(
-      duration: Duration(seconds: 10),
-      radius: 100.0,
-      pieColor: Colors.blueAccent,
-      fillColor: Colors.red,
-      appBarColor: Colors.red,
-    );
-    goModel = const TimerModel(
-      duration: Duration(minutes: 25),
-      radius: 100.0,
-      pieColor: Colors.blueAccent,
-      fillColor: Colors.yellow,
-      appBarColor: Colors.yellow,
-    );
-    shortBreakModel = const TimerModel(
-      duration: Duration(minutes: 5),
-      radius: 100.0,
-      pieColor: Colors.blueAccent,
-      fillColor: Colors.white,
-      appBarColor: Colors.white,
-    );
-    longBreakModel = const TimerModel(
-      duration: Duration(minutes: 15),
-      radius: 100.0,
-      pieColor: Colors.blueAccent,
-      fillColor: Colors.green,
-      appBarColor: Colors.green,
-    );
+  void incrementCycle() {
+    cycleCounter++;
+  }
+
+  void resetCycle() {
+    cycleCounter = 0;
   }
 }

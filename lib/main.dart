@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:pomodoro_app/provider/appbar_provider.dart';
 import 'package:provider/provider.dart';
 
-import './view/timer_view.dart';
-import './view_model/timer_view_model.dart';
+import '../view_model/timer_view_model.dart';
+import '../view/timer_view_pomodoro.dart';
 
 void main() {
-  runApp(MultiProvider(
-    providers: [
-      ChangeNotifierProvider<TimerViewModel>(create: (_) => TimerViewModel()),
-      ChangeNotifierProvider<AppBarProvider>(create: (_) => AppBarProvider()),
-    ],
-    child: const MyApp(),
-  ));
+  runApp(
+    MultiProvider(
+      providers: [
+        Provider<TimerViewModel>(create: (_) => TimerViewModel()),
+      ],
+      child: const MyApp(),
+    ),
+  );
   debugRepaintRainbowEnabled = false;
 }
 
@@ -35,25 +35,6 @@ class MyHomeWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Pomodoro'),
-        backgroundColor:
-            Provider.of<AppBarProvider>(context, listen: true).appBarColor,
-        elevation: 5.0,
-        actions: [
-          Padding(
-            padding: const EdgeInsets.fromLTRB(10.0, 0.0, 0.0, 0.0),
-            child: IconButton(
-              onPressed: () {},
-              icon: const Icon(
-                Icons.settings,
-              ),
-            ),
-          )
-        ],
-      ),
-      body: const TimerView(),
-    );
+    return const TimerViewPomodoro();
   }
 }
