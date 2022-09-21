@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:pomodoro_app/view/settings_view.dart';
 import 'package:pomodoro_app/view/timer_view_long_break.dart';
 import 'package:pomodoro_app/view/timer_view_pomodoro.dart';
+import 'package:pomodoro_app/widgets/app_bar_widget.dart';
 import 'package:provider/provider.dart';
 import 'package:pie_timer/pie_timer.dart';
 
@@ -21,25 +23,13 @@ class TimerViewShortBreak extends StatelessWidget {
   Widget build(BuildContext context) {
     // final themeProvider = Provider.of<ThemeProvider>(context, listen: false);
 
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text("Short Break"),
+    return const Scaffold(
+      appBar: AppBarWidget(
+        title: "Short Break",
         backgroundColor: color_constants.blueDark,
-        elevation: 5.0,
-        actions: [
-          Padding(
-            padding: const EdgeInsets.fromLTRB(0.0, 0.0, 10.0, 0.0),
-            child: IconButton(
-              onPressed: () {},
-              icon: const Icon(
-                Icons.settings,
-              ),
-            ),
-          )
-        ],
       ),
       backgroundColor: color_constants.bluePrimary,
-      body: const ShortBreakBody(),
+      body: ShortBreakBody(),
     );
   }
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pomodoro_app/view/settings_view.dart';
 import 'package:pomodoro_app/view/timer_view_short_break.dart';
 import 'package:provider/provider.dart';
 import 'package:pie_timer/pie_timer.dart';
@@ -8,11 +9,11 @@ import '../view_model/timer_view_model.dart';
 
 import '../provider/theme_provider.dart';
 
+import '../widgets/app_bar_widget.dart';
 import '../widgets/button_widget.dart';
 
 import '../constants/colors.dart' as color_constants;
 import '../constants/pie_values.dart' as pie_constants;
-
 
 class TimerViewPomodoro extends StatelessWidget {
   const TimerViewPomodoro({Key? key}) : super(key: key);
@@ -21,25 +22,13 @@ class TimerViewPomodoro extends StatelessWidget {
   Widget build(BuildContext context) {
     // final themeProvider = Provider.of<ThemeProvider>(context, listen: false);
 
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text("Pomodoro"),
+    return const Scaffold(
+      appBar: AppBarWidget(
+        title: "Pomodoro",
         backgroundColor: color_constants.redDark,
-        elevation: 5.0,
-        actions: [
-          Padding(
-            padding: const EdgeInsets.fromLTRB(0.0, 0.0, 10.0, 0.0),
-            child: IconButton(
-              onPressed: () {},
-              icon: const Icon(
-                Icons.settings,
-              ),
-            ),
-          )
-        ],
       ),
       backgroundColor: color_constants.redPrimary,
-      body: const PomodoroBody(),
+      body: PomodoroBody(),
     );
   }
 }
@@ -53,7 +42,8 @@ class PomodoroBody extends StatefulWidget {
   State<PomodoroBody> createState() => _PomodoroBodyState();
 }
 
-class _PomodoroBodyState extends State<PomodoroBody> with SingleTickerProviderStateMixin {
+class _PomodoroBodyState extends State<PomodoroBody>
+    with SingleTickerProviderStateMixin {
   late PieAnimationController _controller;
 
   @override

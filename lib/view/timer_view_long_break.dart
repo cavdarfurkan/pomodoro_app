@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pomodoro_app/view/settings_view.dart';
 import 'package:pomodoro_app/view/timer_view_pomodoro.dart';
 import 'package:provider/provider.dart';
 import 'package:pie_timer/pie_timer.dart';
@@ -8,6 +9,7 @@ import '../view_model/timer_view_model.dart';
 
 import '../provider/theme_provider.dart';
 
+import '../widgets/app_bar_widget.dart';
 import '../widgets/button_widget.dart';
 
 import 'package:pomodoro_app/constants/colors.dart' as color_constants;
@@ -20,25 +22,13 @@ class TimerViewLongBreak extends StatelessWidget {
   Widget build(BuildContext context) {
     // final themeProvider = Provider.of<ThemeProvider>(context, listen: false);
 
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text("Long Break"),
+    return const Scaffold(
+      appBar: AppBarWidget(
+        title: "Long Break",
         backgroundColor: color_constants.purpleDark,
-        elevation: 5.0,
-        actions: [
-          Padding(
-            padding: const EdgeInsets.fromLTRB(0.0, 0.0, 10.0, 0.0),
-            child: IconButton(
-              onPressed: () {},
-              icon: const Icon(
-                Icons.settings,
-              ),
-            ),
-          )
-        ],
       ),
       backgroundColor: color_constants.purplePrimary,
-      body: const LongBreakBody(),
+      body: LongBreakBody(),
     );
   }
 }
