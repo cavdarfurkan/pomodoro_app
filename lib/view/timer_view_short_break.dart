@@ -1,16 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:pomodoro_app/view/settings_view.dart';
-import 'package:pomodoro_app/view/timer_view_long_break.dart';
-import 'package:pomodoro_app/view/timer_view_pomodoro.dart';
-import 'package:pomodoro_app/widgets/app_bar_widget.dart';
 import 'package:provider/provider.dart';
 import 'package:pie_timer/pie_timer.dart';
 
-import '../model/timer_model.dart';
 import '../view_model/timer_view_model.dart';
+import '../view_model/settings_view_model.dart';
 
-import '../provider/theme_provider.dart';
-
+import '../widgets/app_bar_widget.dart';
 import '../widgets/button_widget.dart';
 
 import '../constants/colors.dart' as color_constants;
@@ -21,15 +16,16 @@ class TimerViewShortBreak extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // final themeProvider = Provider.of<ThemeProvider>(context, listen: false);
-
-    return const Scaffold(
+    return Scaffold(
       appBar: AppBarWidget(
         title: "Short Break",
         backgroundColor: color_constants.blueDark,
+        isSettingsButtonVisible: true,
+        bottomTitle:
+            "Cycle ${Provider.of<TimerViewModel>(context).model.currentCycle}",
       ),
       backgroundColor: color_constants.bluePrimary,
-      body: ShortBreakBody(),
+      body: const ShortBreakBody(),
     );
   }
 }
@@ -46,15 +42,28 @@ class ShortBreakBody extends StatefulWidget {
 class _ShortBreakBodyState extends State<ShortBreakBody>
     with SingleTickerProviderStateMixin {
   late PieAnimationController _controller;
+  late TimerViewModel _timerVM;
+  late SettingsViewModel _settingsVM;
 
   @override
   void initState() {
     super.initState();
     _controller = PieAnimationController(vsync: this);
+
+    WidgetsBinding.instance.endOfFrame.then((value) {
+      if (mounted) afterBuild(context);
+    });
+  }
+
+  void afterBuild(BuildContext context) {
+    if (_settingsVM.settingsModel.isAutoBreaks) _controller.startAnim?.call();
   }
 
   @override
   Widget build(BuildContext context) {
+    _timerVM = Provider.of<TimerViewModel>(context);
+    _settingsVM = context.read<SettingsViewModel>();
+
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -62,7 +71,7 @@ class _ShortBreakBodyState extends State<ShortBreakBody>
         children: [
           PieTimer(
             pieAnimationController: _controller,
-            duration: const Duration(minutes: 5),
+            duration: _settingsVM.settingsModel.shortBreakDuration,
             radius: pie_constants.pieSize,
             pieColor: color_constants.bluePrimary,
             fillColor: color_constants.blueLight,
@@ -70,16 +79,15 @@ class _ShortBreakBodyState extends State<ShortBreakBody>
             borderColor: color_constants.blueDark,
             shadowElevation: pie_constants.shadowElevation,
             enableTouchControls: pie_constants.touchControls,
-            onCompleted: () => print('completed'),
+            onCompleted: () => _timerVM.autoStart(
+                context, _settingsVM.settingsModel.isAutoPomodoros),
             onDismissed: () => print('dismissed'),
           ),
           ButtonWidget(
             buttonColor: color_constants.blueDark,
             onPressStop: () => _controller.stopAnim?.call(),
             onPressStart: () => _controller.startAnim?.call(),
-            onPressNextPage: () =>
-                Provider.of<TimerViewModel>(context, listen: false)
-                    .nextPage(context),
+            onPressNextPage: () => _timerVM.nextPage(context),
           ),
         ],
       ),

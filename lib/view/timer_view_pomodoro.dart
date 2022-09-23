@@ -1,13 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:pomodoro_app/view/settings_view.dart';
-import 'package:pomodoro_app/view/timer_view_short_break.dart';
 import 'package:provider/provider.dart';
 import 'package:pie_timer/pie_timer.dart';
 
-import '../model/timer_model.dart';
 import '../view_model/timer_view_model.dart';
-
-import '../provider/theme_provider.dart';
+import '../view_model/settings_view_model.dart';
 
 import '../widgets/app_bar_widget.dart';
 import '../widgets/button_widget.dart';
@@ -20,15 +16,16 @@ class TimerViewPomodoro extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // final themeProvider = Provider.of<ThemeProvider>(context, listen: false);
-
-    return const Scaffold(
+    return Scaffold(
       appBar: AppBarWidget(
         title: "Pomodoro",
         backgroundColor: color_constants.redDark,
+        isSettingsButtonVisible: true,
+        bottomTitle:
+            "Cycle ${Provider.of<TimerViewModel>(context).model.currentCycle}",
       ),
       backgroundColor: color_constants.redPrimary,
-      body: PomodoroBody(),
+      body: const PomodoroBody(),
     );
   }
 }
@@ -45,15 +42,30 @@ class PomodoroBody extends StatefulWidget {
 class _PomodoroBodyState extends State<PomodoroBody>
     with SingleTickerProviderStateMixin {
   late PieAnimationController _controller;
+  late SettingsViewModel _settingsVM;
+  late TimerViewModel _timerVM;
 
   @override
   void initState() {
     super.initState();
     _controller = PieAnimationController(vsync: this);
+
+    WidgetsBinding.instance.endOfFrame.then((value) {
+      if (mounted) afterBuild(context);
+    });
+  }
+
+  void afterBuild(BuildContext context) {
+    if (_settingsVM.settingsModel.isAutoPomodoros) {
+      _controller.startAnim?.call();
+    }
   }
 
   @override
   Widget build(BuildContext context) {
+    _settingsVM = Provider.of<SettingsViewModel>(context);
+    _timerVM = Provider.of<TimerViewModel>(context);
+
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -61,7 +73,9 @@ class _PomodoroBodyState extends State<PomodoroBody>
         children: [
           PieTimer(
             pieAnimationController: _controller,
-            duration: const Duration(minutes: 25),
+            duration: Provider.of<SettingsViewModel>(context)
+                .settingsModel
+                .pomodoroDuration,
             radius: pie_constants.pieSize,
             pieColor: color_constants.redPrimary,
             fillColor: color_constants.redLight,
@@ -69,16 +83,15 @@ class _PomodoroBodyState extends State<PomodoroBody>
             borderColor: color_constants.redDark,
             shadowElevation: pie_constants.shadowElevation,
             enableTouchControls: pie_constants.touchControls,
-            onCompleted: () => print('completed'),
+            onCompleted: () => _timerVM.autoStart(
+                context, _settingsVM.settingsModel.isAutoBreaks),
             onDismissed: () => print('dismissed'),
           ),
           ButtonWidget(
             buttonColor: color_constants.redDark,
             onPressStop: () => _controller.stopAnim?.call(),
             onPressStart: () => _controller.startAnim?.call(),
-            onPressNextPage: () =>
-                Provider.of<TimerViewModel>(context, listen: false)
-                    .nextPage(context),
+            onPressNextPage: () => _timerVM.nextPage(context),
           ),
         ],
       ),

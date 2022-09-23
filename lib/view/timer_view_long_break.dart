@@ -1,18 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:pomodoro_app/view/settings_view.dart';
-import 'package:pomodoro_app/view/timer_view_pomodoro.dart';
 import 'package:provider/provider.dart';
 import 'package:pie_timer/pie_timer.dart';
 
-import '../model/timer_model.dart';
 import '../view_model/timer_view_model.dart';
-
-import '../provider/theme_provider.dart';
+import '../view_model/settings_view_model.dart';
 
 import '../widgets/app_bar_widget.dart';
 import '../widgets/button_widget.dart';
 
-import 'package:pomodoro_app/constants/colors.dart' as color_constants;
+import '../constants/colors.dart' as color_constants;
 import '../constants/pie_values.dart' as pie_constants;
 
 class TimerViewLongBreak extends StatelessWidget {
@@ -20,15 +16,16 @@ class TimerViewLongBreak extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // final themeProvider = Provider.of<ThemeProvider>(context, listen: false);
-
-    return const Scaffold(
+    return Scaffold(
       appBar: AppBarWidget(
         title: "Long Break",
         backgroundColor: color_constants.purpleDark,
+        isSettingsButtonVisible: true,
+        bottomTitle:
+            "Cycle ${Provider.of<TimerViewModel>(context).model.currentCycle}",
       ),
       backgroundColor: color_constants.purplePrimary,
-      body: LongBreakBody(),
+      body: const LongBreakBody(),
     );
   }
 }
@@ -45,15 +42,28 @@ class LongBreakBody extends StatefulWidget {
 class _LongBreakBodyState extends State<LongBreakBody>
     with SingleTickerProviderStateMixin {
   late PieAnimationController _controller;
+  late TimerViewModel _timerVM;
+  late SettingsViewModel _settingsVM;
 
   @override
   void initState() {
     super.initState();
     _controller = PieAnimationController(vsync: this);
+
+    WidgetsBinding.instance.endOfFrame.then((value) {
+      if (mounted) afterBuild(context);
+    });
+  }
+
+  void afterBuild(BuildContext context) {
+    if (_settingsVM.settingsModel.isAutoBreaks) _controller.startAnim?.call();
   }
 
   @override
   Widget build(BuildContext context) {
+    _settingsVM = context.read<SettingsViewModel>();
+    _timerVM = Provider.of<TimerViewModel>(context);
+
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -61,7 +71,7 @@ class _LongBreakBodyState extends State<LongBreakBody>
         children: [
           PieTimer(
             pieAnimationController: _controller,
-            duration: const Duration(minutes: 15),
+            duration: _settingsVM.settingsModel.longBreakDuration,
             radius: pie_constants.pieSize,
             pieColor: color_constants.purplePrimary,
             fillColor: color_constants.purpleLight,
@@ -69,7 +79,8 @@ class _LongBreakBodyState extends State<LongBreakBody>
             borderColor: color_constants.purpleDark,
             shadowElevation: pie_constants.shadowElevation,
             enableTouchControls: pie_constants.touchControls,
-            onCompleted: () => print('completed'),
+            onCompleted: () => _timerVM.autoStart(
+                context, _settingsVM.settingsModel.isAutoPomodoros),
             onDismissed: () => print('dismissed'),
           ),
           ButtonWidget(
@@ -77,8 +88,7 @@ class _LongBreakBodyState extends State<LongBreakBody>
             onPressStop: () => _controller.stopAnim?.call(),
             onPressStart: () => _controller.startAnim?.call(),
             onPressNextPage: () {
-              Provider.of<TimerViewModel>(context, listen: false)
-                  .nextPage(context);
+              _timerVM.nextPage(context);
             },
           ),
         ],
