@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:pomodoro_app/view_model/settings_view_model.dart';
 import 'package:provider/provider.dart';
 
 import '../view_model/timer_view_model.dart';
@@ -10,6 +11,8 @@ void main() {
     MultiProvider(
       providers: [
         Provider<TimerViewModel>(create: (_) => TimerViewModel()),
+        ChangeNotifierProvider<SettingsViewModel>(
+            create: (_) => SettingsViewModel()),
       ],
       child: const MyApp(),
     ),
