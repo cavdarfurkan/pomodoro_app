@@ -17,4 +17,8 @@ const Color purpleDark = Color.fromRGBO(67, 51, 255, 1);
 const Color purplePrimary = Color.fromRGBO(116, 104, 255, 1);
 const Color purpleLight = Color.fromRGBO(161, 153, 255, 1);
 
+const Color grayDark = Color.fromRGBO(117, 117, 117, 1);
+const Color grayPrimary = Color.fromRGBO(144, 144, 144, 1);
+const Color grayLight = Color.fromRGBO(168, 168, 168, 1);
+
 final Color shadowColor = Colors.black.withOpacity(0.25);
