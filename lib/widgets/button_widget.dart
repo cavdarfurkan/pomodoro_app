@@ -40,6 +40,7 @@ class ButtonWidget extends StatelessWidget {
             ],
           ),
           splashRadius: iconSize / 2,
+          tooltip: "Stop",
         ),
         IconButton(
           onPressed: () => onPressStart(),
@@ -57,6 +58,7 @@ class ButtonWidget extends StatelessWidget {
             ],
           ),
           splashRadius: iconSize,
+          tooltip: "Start",
         ),
         IconButton(
           onPressed: () => onPressNextPage(),
@@ -74,6 +76,7 @@ class ButtonWidget extends StatelessWidget {
             ],
           ),
           splashRadius: iconSize / 2,
+          tooltip: "Next",
         ),
       ],
     );
