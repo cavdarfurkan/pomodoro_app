@@ -1,31 +1,37 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../model/timer_model.dart';
+import '../view_model/settings_view_model.dart';
 
 import '../view/timer_view_pomodoro.dart';
 import '../view/timer_view_short_break.dart';
 import '../view/timer_view_long_break.dart';
 
 class TimerViewModel {
+  TimerModel model = TimerModel();
+  int _cycleCounter = 1;
+
+  late int longBreakInterval;
+
   TimerViewModel();
 
-  TimerModel model = TimerModel(longBreakInterval: 4);
-  int cycleCounter = 1;
-
   void nextPage(BuildContext context) {
+    longBreakInterval =
+        context.read<SettingsViewModel>().settingsModel.longBreakInterval;
+
     Navigator.of(context).pushReplacement(
       PageRouteBuilder(
         pageBuilder: (_, animation, secondaryAnimation) {
-          if (cycleCounter != 4) {
+          if (_cycleCounter != longBreakInterval) {
             if (context.widget.toString() == 'PomodoroBody') {
               return const TimerViewShortBreak();
             } else {
-              incrementCycle();
-              debugPrint("${cycleCounter}");
+              _incrementCycleCounter();
               return const TimerViewPomodoro();
             }
           } else {
-            resetCycle();
+            _resetCycleCounter();
             return const TimerViewLongBreak();
           }
         },
@@ -47,11 +53,22 @@ class TimerViewModel {
     );
   }
 
-  void incrementCycle() {
-    cycleCounter++;
+  void autoStart(BuildContext context, bool isAutoStart) {
+    if (isAutoStart) {
+      nextPage(context);
+    }
   }
 
-  void resetCycle() {
-    cycleCounter = 0;
+  void _incrementCycleCounter() {
+    _cycleCounter++;
+    _incrementCurrentCycle();
+  }
+
+  void _resetCycleCounter() {
+    _cycleCounter = 0;
+  }
+
+  void _incrementCurrentCycle() {
+    model.currentCycle++;
   }
 }

@@ -1,7 +1,5 @@
 class TimerModel {
-  int longBreakInterval;
+  int currentCycle = 1; // Initial value is 1
 
-  TimerModel({
-    required this.longBreakInterval,
-  });
+  TimerModel();
 }
