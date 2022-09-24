@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:pomodoro_app/model/settings_model.dart';
 import 'package:provider/provider.dart';
+
+import '../model/settings_model.dart';
 
 class SettingsViewModel extends ChangeNotifier {
   late SettingsModel settingsModel;
@@ -123,5 +124,18 @@ class SettingsViewModel extends ChangeNotifier {
         );
       },
     );
+  }
+
+  void resetToDefaults(){
+    settingsModel.longBreakInterval = 4;
+
+    settingsModel.pomodoroDuration = const Duration(minutes: 25);
+    settingsModel.shortBreakDuration = const Duration(minutes: 5);
+    settingsModel.longBreakDuration = const Duration(minutes: 15);
+    
+    settingsModel.isAutoPomodoros = false;
+    settingsModel.isAutoBreaks = false;
+
+    notifyListeners();
   }
 }

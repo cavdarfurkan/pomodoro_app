@@ -13,7 +13,7 @@ class SettingsView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return const Scaffold(
       appBar: AppBarWidget(
         title: 'Settings',
         backgroundColor: color_constants.grayDark,
@@ -21,7 +21,7 @@ class SettingsView extends StatelessWidget {
         isBackButtonVisible: true,
       ),
       backgroundColor: color_constants.grayPrimary,
-      body: const SettingsBody(),
+      body: SettingsBody(),
     );
   }
 }
@@ -143,6 +143,23 @@ class SettingsBody extends StatelessWidget {
                 child: Switch(
                   value: viewModel.settingsModel.isAutoBreaks,
                   onChanged: (v) => viewModel.swithcAutoBreaks(v),
+                ),
+              ),
+            ],
+          ),
+        ),
+        ListTileWidget(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              const Flexible(
+                  fit: FlexFit.tight,
+                  child: Text("Reset To Defaults", textAlign: TextAlign.start)),
+              Flexible(
+                fit: FlexFit.loose,
+                child: OutlinedButton(
+                  onPressed: () => viewModel.resetToDefaults(),
+                  child: const Text('Reset'),
                 ),
               ),
             ],
