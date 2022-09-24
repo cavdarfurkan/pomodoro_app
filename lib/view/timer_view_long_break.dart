@@ -9,7 +9,7 @@ import '../widgets/app_bar_widget.dart';
 import '../widgets/button_widget.dart';
 
 import '../constants/colors.dart' as color_constants;
-import '../constants/pie_values.dart' as pie_constants;
+import '../constants/timer_values.dart' as timer_constants;
 
 class TimerViewLongBreak extends StatelessWidget {
   const TimerViewLongBreak({Key? key}) : super(key: key);
@@ -72,13 +72,13 @@ class _LongBreakBodyState extends State<LongBreakBody>
           PieTimer(
             pieAnimationController: _controller,
             duration: _settingsVM.settingsModel.longBreakDuration,
-            radius: pie_constants.pieSize,
+            radius: timer_constants.pieSize,
             pieColor: color_constants.purplePrimary,
             fillColor: color_constants.purpleLight,
-            borderWidth: pie_constants.borderWidth,
+            borderWidth: timer_constants.borderWidth,
             borderColor: color_constants.purpleDark,
-            shadowElevation: pie_constants.shadowElevation,
-            enableTouchControls: pie_constants.touchControls,
+            shadowElevation: timer_constants.shadowElevation,
+            enableTouchControls: timer_constants.touchControls,
             onCompleted: () => _timerVM.autoStart(
                 context, _settingsVM.settingsModel.isAutoPomodoros),
             onDismissed: () => print('dismissed'),

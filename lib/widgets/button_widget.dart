@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
-import 'package:pomodoro_app/constants/colors.dart' as color_constants;
+import '../constants/colors.dart' as color_constants;
+import '../constants/timer_values.dart' as timer_constants;
 
 class ButtonWidget extends StatelessWidget {
   const ButtonWidget({
@@ -16,8 +17,6 @@ class ButtonWidget extends StatelessWidget {
   final VoidCallback onPressStart;
   final VoidCallback onPressNextPage;
 
-  final double iconSize = 100.0;
-
   @override
   Widget build(BuildContext context) {
     return Wrap(
@@ -26,11 +25,11 @@ class ButtonWidget extends StatelessWidget {
       children: [
         IconButton(
           onPressed: () => onPressStop(),
-          iconSize: iconSize,
+          iconSize: timer_constants.iconSize,
           icon: Icon(
             Icons.stop_rounded,
             color: buttonColor,
-            size: iconSize,
+            size: timer_constants.iconSize,
             shadows: [
               BoxShadow(
                 blurRadius: 1.0,
@@ -39,16 +38,16 @@ class ButtonWidget extends StatelessWidget {
               ),
             ],
           ),
-          splashRadius: iconSize / 2,
+          splashRadius: timer_constants.iconSize / 2,
           tooltip: "Stop",
         ),
         IconButton(
           onPressed: () => onPressStart(),
-          iconSize: iconSize * 2,
+          iconSize: timer_constants.iconSize * 2,
           icon: Icon(
             Icons.play_arrow_rounded,
             color: buttonColor,
-            size: iconSize * 2,
+            size: timer_constants.iconSize * 2,
             shadows: [
               BoxShadow(
                 blurRadius: 1.0,
@@ -57,16 +56,16 @@ class ButtonWidget extends StatelessWidget {
               ),
             ],
           ),
-          splashRadius: iconSize,
+          splashRadius: timer_constants.iconSize,
           tooltip: "Start",
         ),
         IconButton(
           onPressed: () => onPressNextPage(),
-          iconSize: iconSize,
+          iconSize: timer_constants.iconSize,
           icon: Icon(
             Icons.skip_next_rounded,
             color: buttonColor,
-            size: iconSize,
+            size: timer_constants.iconSize,
             shadows: [
               BoxShadow(
                 blurRadius: 1.0,
@@ -75,7 +74,7 @@ class ButtonWidget extends StatelessWidget {
               ),
             ],
           ),
-          splashRadius: iconSize / 2,
+          splashRadius: timer_constants.iconSize / 2,
           tooltip: "Next",
         ),
       ],

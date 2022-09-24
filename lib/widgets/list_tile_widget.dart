@@ -26,7 +26,7 @@ class ListTileWidget extends StatelessWidget {
             BoxShadow(
               blurRadius: 5.0,
               offset: Offset(0.0, 5.0),
-              color: color_constants.grayDark
+              color: color_constants.grayDark,
             ),
           ],
         ),
