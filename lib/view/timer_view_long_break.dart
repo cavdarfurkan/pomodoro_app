@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:pie_timer/pie_timer.dart';
 
+import '../services/notification_service.dart';
+
 import '../view_model/timer_view_model.dart';
 import '../view_model/settings_view_model.dart';
 
@@ -45,6 +47,8 @@ class _LongBreakBodyState extends State<LongBreakBody>
   late TimerViewModel _timerVM;
   late SettingsViewModel _settingsVM;
 
+  final NotificationService _notificationService = NotificationService();
+
   @override
   void initState() {
     super.initState();
@@ -79,8 +83,14 @@ class _LongBreakBodyState extends State<LongBreakBody>
             borderColor: color_constants.purpleDark,
             shadowElevation: timer_constants.shadowElevation,
             enableTouchControls: timer_constants.touchControls,
-            onCompleted: () => _timerVM.autoStart(
-                context, _settingsVM.settingsModel.isAutoPomodoros),
+            onCompleted: () {
+              _timerVM.autoStart(
+                  context, _settingsVM.settingsModel.isAutoPomodoros);
+              if (_settingsVM.settingsModel.isNotification) {
+                _notificationService.showNotifications(
+                    'Long break is over', 'Back to work');
+              }
+            },
             onDismissed: () => print('dismissed'),
           ),
           ButtonWidget(

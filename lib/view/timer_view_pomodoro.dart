@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:pie_timer/pie_timer.dart';
 
+import '../services/notification_service.dart';
+
 import '../view_model/timer_view_model.dart';
 import '../view_model/settings_view_model.dart';
 
@@ -44,6 +46,8 @@ class _PomodoroBodyState extends State<PomodoroBody>
   late PieAnimationController _controller;
   late SettingsViewModel _settingsVM;
   late TimerViewModel _timerVM;
+  
+  final NotificationService _notificationService = NotificationService();
 
   @override
   void initState() {
@@ -83,9 +87,15 @@ class _PomodoroBodyState extends State<PomodoroBody>
             borderColor: color_constants.redDark,
             shadowElevation: timer_constants.shadowElevation,
             enableTouchControls: timer_constants.touchControls,
-            onCompleted: () => _timerVM.autoStart(
-                context, _settingsVM.settingsModel.isAutoBreaks),
-            onDismissed: () => print('dismissed'),
+            onCompleted: () {
+              _timerVM.autoStart(
+                  context, _settingsVM.settingsModel.isAutoBreaks);
+              if (_settingsVM.settingsModel.isNotification) {
+                _notificationService.showNotifications(
+                    'Pomodoro is over', 'You can rest now');
+              }
+            },
+            onDismissed: () {},
           ),
           ButtonWidget(
             buttonColor: color_constants.redDark,

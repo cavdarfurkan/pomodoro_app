@@ -5,8 +5,12 @@ import 'package:provider/provider.dart';
 
 import '../view_model/timer_view_model.dart';
 import '../view/timer_view_pomodoro.dart';
+import 'services/notification_service.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  NotificationService().init();
+
   runApp(
     MultiProvider(
       providers: [

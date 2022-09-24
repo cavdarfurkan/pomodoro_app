@@ -1,12 +1,13 @@
 class SettingsModel {
   int _longBreakInterval = 4;
 
-  Duration _pomodoroDuration = const Duration(minutes: 25);
+  Duration _pomodoroDuration = const Duration(seconds: 5);
   Duration _shortBreakDuration = const Duration(minutes: 5);
   Duration _longBreakDuration = const Duration(minutes: 15);
 
   bool _isAutoPomodoros = false;
   bool _isAutoBreaks = false;
+  bool _isNotification = true;
 
   SettingsModel();
 
@@ -27,4 +28,7 @@ class SettingsModel {
 
   bool get isAutoBreaks => _isAutoBreaks;
   set isAutoBreaks(bool value) => _isAutoBreaks = value;
+
+  bool get isNotification => _isNotification;
+  set isNotification(bool value) => _isNotification = value;
 }

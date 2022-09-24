@@ -61,13 +61,18 @@ class SettingsViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  void swithcAutoPomodoros(bool value) {
+  void switchAutoPomodoros(bool value) {
     settingsModel.isAutoPomodoros = value;
     notifyListeners();
   }
 
-  void swithcAutoBreaks(bool value) {
+  void switchAutoBreaks(bool value) {
     settingsModel.isAutoBreaks = value;
+    notifyListeners();
+  }
+
+  void switchNotification(bool value) {
+    settingsModel.isNotification = value;
     notifyListeners();
   }
 
@@ -126,15 +131,16 @@ class SettingsViewModel extends ChangeNotifier {
     );
   }
 
-  void resetToDefaults(){
+  void resetToDefaults() {
     settingsModel.longBreakInterval = 4;
 
     settingsModel.pomodoroDuration = const Duration(minutes: 25);
     settingsModel.shortBreakDuration = const Duration(minutes: 5);
     settingsModel.longBreakDuration = const Duration(minutes: 15);
-    
+
     settingsModel.isAutoPomodoros = false;
     settingsModel.isAutoBreaks = false;
+    settingsModel.isNotification = true;
 
     notifyListeners();
   }

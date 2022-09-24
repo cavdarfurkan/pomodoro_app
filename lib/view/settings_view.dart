@@ -106,7 +106,7 @@ class SettingsBody extends StatelessWidget {
                 fit: FlexFit.loose,
                 child: Switch(
                   value: viewModel.settingsModel.isAutoPomodoros,
-                  onChanged: (v) => viewModel.swithcAutoPomodoros(v),
+                  onChanged: (v) => viewModel.switchAutoPomodoros(v),
                 ),
               ),
             ],
@@ -124,7 +124,7 @@ class SettingsBody extends StatelessWidget {
                 fit: FlexFit.loose,
                 child: Switch(
                   value: viewModel.settingsModel.isAutoBreaks,
-                  onChanged: (v) => viewModel.swithcAutoBreaks(v),
+                  onChanged: (v) => viewModel.switchAutoBreaks(v),
                 ),
               ),
             ],
@@ -141,8 +141,8 @@ class SettingsBody extends StatelessWidget {
               Flexible(
                 fit: FlexFit.loose,
                 child: Switch(
-                  value: viewModel.settingsModel.isAutoBreaks,
-                  onChanged: (v) => viewModel.swithcAutoBreaks(v),
+                  value: viewModel.settingsModel.isNotification,
+                  onChanged: (v) => viewModel.switchNotification(v),
                 ),
               ),
             ],
