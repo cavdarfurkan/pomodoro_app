@@ -10,7 +10,7 @@ import '../view/timer_view_long_break.dart';
 
 class TimerViewModel {
   TimerModel model = TimerModel();
-  int _cycleCounter = 1;
+  int cycleCounter = 1;
 
   late int longBreakInterval;
 
@@ -20,10 +20,12 @@ class TimerViewModel {
     longBreakInterval =
         context.read<SettingsViewModel>().settingsModel.longBreakInterval;
 
+    if (longBreakInterval < cycleCounter) resetCycleCounter();
+
     Navigator.of(context).pushReplacement(
       PageRouteBuilder(
         pageBuilder: (_, animation, secondaryAnimation) {
-          if (_cycleCounter != longBreakInterval) {
+          if (cycleCounter != longBreakInterval) {
             if (context.widget.toString() == 'PomodoroBody') {
               return const TimerViewShortBreak();
             } else {
@@ -31,7 +33,7 @@ class TimerViewModel {
               return const TimerViewPomodoro();
             }
           } else {
-            _resetCycleCounter();
+            resetCycleCounter();
             return const TimerViewLongBreak();
           }
         },
@@ -60,12 +62,12 @@ class TimerViewModel {
   }
 
   void _incrementCycleCounter() {
-    _cycleCounter++;
+    cycleCounter++;
     _incrementCurrentCycle();
   }
 
-  void _resetCycleCounter() {
-    _cycleCounter = 0;
+  void resetCycleCounter() {
+    cycleCounter = 0;
   }
 
   void _incrementCurrentCycle() {
