@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:pomodoro_app/view_model/settings_view_model.dart';
 import 'package:provider/provider.dart';
 
@@ -21,7 +20,6 @@ void main() {
       child: const MyApp(),
     ),
   );
-  debugRepaintRainbowEnabled = false;
 }
 
 class MyApp extends StatelessWidget {
