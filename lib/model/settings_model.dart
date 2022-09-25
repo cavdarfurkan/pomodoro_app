@@ -1,7 +1,7 @@
 class SettingsModel {
   int _longBreakInterval = 4;
 
-  Duration _pomodoroDuration = const Duration(seconds: 5);
+  Duration _pomodoroDuration = const Duration(minutes: 25);
   Duration _shortBreakDuration = const Duration(minutes: 5);
   Duration _longBreakDuration = const Duration(minutes: 15);
 
